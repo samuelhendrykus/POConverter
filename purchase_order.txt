@@ -1,0 +1,103 @@
+Purchase Order
+Kode Pengirim
+Kode Departemen
+Kelompok Pemesan
+Nomor Order
+Tanggal Order
+Tanggal Pengiriman
+Kode Supplier
+Nama Supplier
+No Telepon Supplier
+No Fax Supplier
+8990280000000
+22
+028
+Pengiriman Ke ITC BSD
+914015168
+Sat, Jun 14,2014, 00:31
+Sun, Jun 15,2014, 15:00
+O435
+JKT MSH
+021-87785151
+021-8401984
+CDT TRI1406051792866
+No
+Kode Barang Kapasitas Nama Barang
+Qty/Pack
+Total
+Qty
+Sub Barcode Nama Sub Code
+Qty dipesan
+Kemasan Gratis Unit
+Harga unit
+/
+1
+001013 1KGx1
+001 01 2007460000000
+LETTUCE HEAD
+SELADA KEPALA
+5.0
+N 0.0 1.0 5.0 17,500.00 /
+22
+2
+010148 1KGx1
+001 01 2011660000000
+LOCAL CARROT MIX GRADE
+WORTEL LOKAL
+10.0
+N 0.0 1.0 10.0 9,000.00 /
+22
+3
+014002 1KGx1
+001 01 2007680000000
+CABBAGE
+KOL PUTIH
+20.0
+N 0.0 1.0 20.0 7,500.00 /
+22
+4
+014005 1KGx1
+001 01 2007660000000
+CAULIFLOWER
+KEMBANG KOL
+5.0
+N 0.0 1.0 5.0 22,000.00 /
+22
+5
+014006 1KGx1
+001 01 2007570000000
+CHINESSE CABBAGE
+SAWI PUTIH
+20.0
+N 0.0 1.0 20.0 7,500.00 /
+22
+6
+014025 1KGx1
+001 01 2012430000000
+PM LOOSE BROCOLLY
+PM BROKOLI CRH
+15.0
+N 0.0 1.0 15.0 32,000.00 /
+22
+7
+016017 1KGx1
+001 01 2007690000000
+BABY CABBAGE
+KOL PUTIH KECIL
+5.0
+N 0.0 1.0 5.0 15,500.00 /
+22
+8
+016018 1KGx1
+001 01 2007580000000
+BABBY CHINESSE CABBAGE
+SAWI PUTIH MINI
+5.0
+N 0.0 1.0 5.0 15,500.00 /
+22
+TOTAL HARGA 1,222,500.00 Rp
+Mulai tanggal 1 January 2014, PT. Trans Retail Indonesia hanya akan menerima invoice yang dilengkapi dengan barcode. OTP VMS harus digunakan untuk proses invoice
+barcode. Informasi tambahan dan petunjuk penggunaan dapat menghubungi VMS Support melalui email vms_support@transretail.co.id
+REMARK:
+Call center VMS: 021-29555391, 021-29555392, 021-29555393, 021-29555394
+Page 1 of 1
