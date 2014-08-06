@@ -1,0 +1,457 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package views;
+
+import controllers.MainController;
+import documentHandlers.PurchaseOrderReader;
+import java.io.File;
+import java.io.FileFilter;
+import java.util.List;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import utils.POCException;
+
+/**
+ *
+ * @author samuelhendrykus
+ */
+public class POMain extends javax.swing.JFrame {
+    private MainController mainController;
+    private PurchaseOrderReader reader;
+    
+    private JList<String> jList1;
+    private JTable jTable;
+    private String input, output;
+    private DefaultListModel<String> model;
+    private DefaultTableModel tablemodel;
+    /**
+     * Creates new form POMain
+     */
+    public POMain(MainController main) {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
+            JOptionPane.showMessageDialog(this, "Failed to set Look and Feel", "GUI Exception", JOptionPane.WARNING_MESSAGE);
+        }
+        initComponents();
+        
+        mainController = main;
+        model = new DefaultListModel<>();
+        
+        // Find the input & output folder
+        
+        try
+        {
+            String[] paths = mainController.getInputOutputFolderPaths();
+            input = paths[0];
+            output = paths[1];
+        }
+        catch(POCException ex)
+        {
+            input = "";
+            output = "";
+            JOptionPane.showMessageDialog(this, ex.getMessage(), ex.getTitle(), JOptionPane.WARNING_MESSAGE);
+        }
+        
+        // buttons, text fields, etc
+                
+//        this.textFieldFolderMasukan.setText(this.input);
+//        this.textFieldFolderKeluaran.setText(this.output);
+        this.buttonBuatSuratJalan.setEnabled(false);    
+        this.jList1 = new JList(model);
+        this.jList1.setSize(this.scrollPaneDaftarPDFMasukan.getSize());
+        this.scrollPaneDaftarPDFMasukan.add(jList1);
+        this.jList1.setVisible(true);
+        this.scrollPaneDaftarPDFMasukan.validate();
+        this.scrollPaneDaftarPDFMasukan.setViewportView(this.jList1);
+        if(input.isEmpty() == false) showListPDFFiles(input);
+        
+        // frame title, icon, etc
+        /*                
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("/abc/icon.png"));
+        this.setIconImage(icon.getImage());
+        this.setTitle("PO Converter");
+        */
+        try{
+            this.setIconImage(mainController.getIconImage());
+//            this.setIconImage(new ImageIcon(getClass().getResource("/abc/icon.png")).getImage());
+        }catch(POCException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), e.getTitle(), JOptionPane.WARNING_MESSAGE);
+        }
+        this.setTitle("PO Converter");
+        
+        // launch the window  
+      
+        pack();
+        validate();
+        //setExtendedState(Frame.MAXIMIZED_BOTH);   // for full screen
+        setLocationRelativeTo(null);    // centering the window
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        setSize(500, 500);
+        this.initTable();
+        setVisible(true);
+    }
+    
+    private void showListPDFFiles(String folderPath)
+    {       
+        this.model.clear();
+        File folder = new File(folderPath);
+        File[] listFiles = folder.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File file) 
+            {
+                String path = file.getAbsolutePath().toLowerCase();
+                if(file.isFile() && file.getAbsolutePath().toLowerCase().endsWith("pdf")) return true;
+                else return false;
+            }
+        });
+        if (listFiles != null) 
+        {
+            for(File f : listFiles) model.addElement(f.getName());
+            this.update(this.getGraphics());
+        }
+    }
+    
+    public void initTable() 
+    {
+        tablemodel = new DefaultTableModel();
+        this.jTable = new JTable(tablemodel) 
+        {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                if (column == 3) {
+                    return true;
+                }
+                return false;
+            }
+        };
+        tablemodel.addColumn("Nomor PO");
+        tablemodel.addColumn("Tanggal pengiriman");
+        tablemodel.addColumn("Tujuan");
+        tablemodel.addColumn("Nomor Faktur");
+        this.scrollPaneDaftarSuratJalan.add(this.jTable);
+        this.scrollPaneDaftarSuratJalan.setViewportView(this.jTable);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        panelUtama = new javax.swing.JPanel();
+        scrollPaneDaftarPDFMasukan = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
+        buttonBuatDaftarBelanja = new javax.swing.JButton();
+        buttonPilihSemua = new javax.swing.JButton();
+        buttonBuatDaftarSuratJalan = new javax.swing.JButton();
+        buttonBuatSuratJalan = new javax.swing.JButton();
+        buttonRefresh = new javax.swing.JButton();
+        scrollPaneDaftarSuratJalan = new javax.swing.JScrollPane();
+        labelBrand1 = new javax.swing.JLabel();
+        labelBrand2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        fieldBatasAtas = new javax.swing.JTextField();
+        fieldBatasBawah = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        panelUtama.setBackground(new java.awt.Color(255, 255, 255));
+        panelUtama.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelUtamaMouseClicked(evt);
+            }
+        });
+        panelUtama.setLayout(null);
+
+        scrollPaneDaftarPDFMasukan.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        scrollPaneDaftarPDFMasukan.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        jPanel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 628, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 311, Short.MAX_VALUE)
+        );
+
+        scrollPaneDaftarPDFMasukan.setViewportView(jPanel1);
+
+        panelUtama.add(scrollPaneDaftarPDFMasukan);
+        scrollPaneDaftarPDFMasukan.setBounds(10, 11, 493, 176);
+
+        buttonBuatDaftarBelanja.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        buttonBuatDaftarBelanja.setText("Buar Daftar Belanja");
+        buttonBuatDaftarBelanja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBuatDaftarBelanjaActionPerformed(evt);
+            }
+        });
+        panelUtama.add(buttonBuatDaftarBelanja);
+        buttonBuatDaftarBelanja.setBounds(700, 90, 180, 25);
+
+        buttonPilihSemua.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        buttonPilihSemua.setText("Pilih Semua");
+        buttonPilihSemua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPilihSemuaActionPerformed(evt);
+            }
+        });
+        panelUtama.add(buttonPilihSemua);
+        buttonPilihSemua.setBounds(520, 90, 110, 25);
+
+        buttonBuatDaftarSuratJalan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        buttonBuatDaftarSuratJalan.setText("Buat Daftar Surat Jalan");
+        buttonBuatDaftarSuratJalan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBuatDaftarSuratJalanActionPerformed(evt);
+            }
+        });
+        panelUtama.add(buttonBuatDaftarSuratJalan);
+        buttonBuatDaftarSuratJalan.setBounds(700, 210, 180, 25);
+
+        buttonBuatSuratJalan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        buttonBuatSuratJalan.setText("Buat Surat Jalan");
+        buttonBuatSuratJalan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBuatSuratJalanActionPerformed(evt);
+            }
+        });
+        panelUtama.add(buttonBuatSuratJalan);
+        buttonBuatSuratJalan.setBounds(700, 240, 180, 25);
+
+        buttonRefresh.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        buttonRefresh.setText("Refresh");
+        buttonRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRefreshActionPerformed(evt);
+            }
+        });
+        panelUtama.add(buttonRefresh);
+        buttonRefresh.setBounds(520, 120, 110, 25);
+
+        scrollPaneDaftarSuratJalan.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        panelUtama.add(scrollPaneDaftarSuratJalan);
+        scrollPaneDaftarSuratJalan.setBounds(10, 193, 680, 161);
+
+        labelBrand1.setFont(new java.awt.Font("Trajan Pro", 0, 11)); // NOI18N
+        labelBrand1.setText("PO Converter");
+        panelUtama.add(labelBrand1);
+        labelBrand1.setBounds(420, 390, 65, 20);
+
+        labelBrand2.setFont(new java.awt.Font("Trajan Pro", 0, 11)); // NOI18N
+        labelBrand2.setText("| by Aristophanes A. Alvin & Samuel Hendrykus S. 2014");
+        panelUtama.add(labelBrand2);
+        labelBrand2.setBounds(530, 390, 269, 20);
+
+        jLabel3.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        jLabel3.setText("Harga beli");
+        panelUtama.add(jLabel3);
+        jLabel3.setBounds(521, 17, 74, 17);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setText("Batas bawah");
+        panelUtama.add(jLabel4);
+        jLabel4.setBounds(520, 50, 80, 15);
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel5.setText("Batas atas");
+        panelUtama.add(jLabel5);
+        jLabel5.setBounds(710, 50, 70, 15);
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setText("%");
+        panelUtama.add(jLabel7);
+        jLabel7.setBounds(660, 50, 14, 17);
+        panelUtama.add(fieldBatasAtas);
+        fieldBatasAtas.setBounds(780, 50, 50, 20);
+        panelUtama.add(fieldBatasBawah);
+        fieldBatasBawah.setBounds(600, 50, 50, 20);
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("%");
+        panelUtama.add(jLabel8);
+        jLabel8.setBounds(840, 50, 20, 20);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 933, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelUtama, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 933, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 425, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelUtama, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonBuatDaftarBelanjaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBuatDaftarBelanjaActionPerformed
+
+        double batasAtas, batasBawah;
+        List<String> listfile;
+        String[] inputFiles;
+
+        // Validity checking        
+
+        if (fieldBatasAtas.getText().trim().isEmpty() || fieldBatasBawah.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Batas atas dan batas bawah harus diisi.", "Ups...", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            batasAtas = Double.parseDouble(fieldBatasAtas.getText());
+            batasBawah = Double.parseDouble(fieldBatasBawah.getText());
+            batasAtas /= 100.0;
+            batasBawah /= 100.0;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Batas atas & batas bawah harus berupa angka.", "Ups...", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        listfile = this.jList1.getSelectedValuesList();
+        inputFiles = new String[listfile.size()];
+        if (inputFiles.length == 0) {
+            JOptionPane.showMessageDialog(this, "Pilih PDF masukan.");
+            return;
+        }
+
+        // Run the operation  
+
+        for (int i = 0; i < inputFiles.length; i++) {
+            inputFiles[i] = this.input + "\\" + listfile.get(i);
+        }
+
+        boolean success = mainController.generateDaftarBelanja(inputFiles, output, batasAtas, batasBawah);
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Berhasil membuat Daftar Belanja", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal membuat Daftar Belanja", "Gagal", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+        for (int i = 0; i < this.tablemodel.getRowCount(); i++) {
+            this.tablemodel.removeRow(i);
+        }
+    }//GEN-LAST:event_buttonBuatDaftarBelanjaActionPerformed
+
+    private void buttonPilihSemuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPilihSemuaActionPerformed
+        // TODO add your handling code here:
+        this.jList1.setSelectionInterval(0, this.jList1.getModel().getSize() - 1);
+    }//GEN-LAST:event_buttonPilihSemuaActionPerformed
+
+    private void buttonBuatDaftarSuratJalanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBuatDaftarSuratJalanActionPerformed
+        // TODO add your handling code here:
+        this.buttonBuatSuratJalan.setEnabled(true);
+        int rowCount = this.tablemodel.getRowCount();
+        for (int i = 0; i < rowCount; i++) {
+            this.tablemodel.removeRow(0);
+        }
+        List<String> listfile = this.jList1.getSelectedValuesList();
+        String[] inputFiles = new String[listfile.size()];
+        if (inputFiles.length == 0) {
+            JOptionPane.showMessageDialog(this, "Pilih PDF masukan!");
+        } else {
+            for (int i = 0; i < inputFiles.length; i++) {
+                inputFiles[i] = this.input + "\\" + listfile.get(i);
+            }
+//            try {
+//                reader = new PurchaseOrderReader();
+//                reader.parsePdfToTxt(inputFiles, "purchase_order.txt");
+//                reader.parseTxtToObjects("purchase_order.txt");
+//
+//                for (PurchaseOrder po : reader.getDaftarPesanan().getDaftarPO()) {
+//                    this.tablemodel.addRow(new Object[]{po.nomorPO, po.tanggalKirim, po.namaToko, new String(" ")});
+//                }
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+            boolean success = this.mainController.generateDaftarSuratJalan(inputFiles, tablemodel);
+            if (success) {
+                JOptionPane.showMessageDialog(this, "Berhasil membuat Daftar Surat Jalan", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal membuat Daftar Surat Jalan", "Gagal", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_buttonBuatDaftarSuratJalanActionPerformed
+
+    private void buttonBuatSuratJalanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBuatSuratJalanActionPerformed
+        // TODO add your handling code here:
+//        dipindah ke maincontroller
+//        SuratJalanGenerator sjg;
+//        int idx = 0;
+//        for (PurchaseOrder po : reader.getDaftarPesanan().getDaftarPO()) {
+//            po.setFaktur((String)this.tablemodel.getValueAt(idx, 3));
+//            idx++;
+//        }
+//        try {
+//            sjg = new SuratJalanGenerator();
+//            sjg.generateSuratJalan(this.output + "\\Surat Jalan\\", reader.getDaftarPesanan());
+//        } catch (DocumentException ex) {
+//            Logger.getLogger(POConverter.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (Exception ex) {
+//            Logger.getLogger(POConverter.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        boolean success = this.mainController.generateSuratJalan(output, tablemodel);
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Berhasil membuat Surat Jalan", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal membuat Surat Jalan", "Gagal", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonBuatSuratJalanActionPerformed
+
+    private void buttonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRefreshActionPerformed
+        if (input.isEmpty() == false) {
+            this.showListPDFFiles(input);
+        }
+    }//GEN-LAST:event_buttonRefreshActionPerformed
+
+    private void panelUtamaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelUtamaMouseClicked
+
+   }//GEN-LAST:event_panelUtamaMouseClicked
+
+    /**
+     * @param args the command line arguments
+     */
+    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonBuatDaftarBelanja;
+    private javax.swing.JButton buttonBuatDaftarSuratJalan;
+    private javax.swing.JButton buttonBuatSuratJalan;
+    private javax.swing.JButton buttonPilihSemua;
+    private javax.swing.JButton buttonRefresh;
+    private javax.swing.JTextField fieldBatasAtas;
+    private javax.swing.JTextField fieldBatasBawah;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel labelBrand1;
+    private javax.swing.JLabel labelBrand2;
+    private javax.swing.JPanel panelUtama;
+    private javax.swing.JScrollPane scrollPaneDaftarPDFMasukan;
+    private javax.swing.JScrollPane scrollPaneDaftarSuratJalan;
+    // End of variables declaration//GEN-END:variables
+}

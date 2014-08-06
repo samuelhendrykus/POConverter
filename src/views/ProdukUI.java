@@ -5,19 +5,49 @@
 package views;
 
 import Connection.SQLHandler;
+import controllers.MainController;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import utils.POCException;
 
 /**
  *
  * @author samuelhendrykus
  */
 public class ProdukUI extends javax.swing.JFrame {
+    private MainController mainController;
     SQLHandler handler;
     /**
      * Creates new form ProdukUI
      */
-    public ProdukUI() {
+    public ProdukUI(MainController main) {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
+            JOptionPane.showMessageDialog(this, "Failed to set Look and Feel", "GUI Exception", JOptionPane.WARNING_MESSAGE);
+        }
+        mainController = main;
         initComponents();
         handler = new SQLHandler();
+        try{
+            this.setIconImage(mainController.getIconImage());
+//            this.setIconImage(new ImageIcon(getClass().getResource("/abc/icon.png")).getImage());
+        }catch(POCException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), e.getTitle(), JOptionPane.WARNING_MESSAGE);
+        }
+        this.setTitle("PO Converter");
+        
+        // launch the window  
+      
+        pack();
+        validate();
+        //setExtendedState(Frame.MAXIMIZED_BOTH);   // for full screen
+        setLocationRelativeTo(null);    // centering the window
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        setSize(500, 500);
+        setVisible(true);
     }
 
     /**
@@ -44,6 +74,8 @@ public class ProdukUI extends javax.swing.JFrame {
         TambahProduk = new javax.swing.JButton();
         ResultPane = new javax.swing.JScrollPane();
         CariProduk = new javax.swing.JButton();
+        labelBrand1 = new javax.swing.JLabel();
+        labelBrand2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Produk");
@@ -66,6 +98,12 @@ public class ProdukUI extends javax.swing.JFrame {
 
         CariProduk.setText("Cari Produk");
 
+        labelBrand1.setFont(new java.awt.Font("Trajan Pro", 0, 11)); // NOI18N
+        labelBrand1.setText("PO Converter");
+
+        labelBrand2.setFont(new java.awt.Font("Trajan Pro", 0, 11)); // NOI18N
+        labelBrand2.setText("| by Aristophanes A. Alvin & Samuel Hendrykus S. 2014");
+
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
         MainPanelLayout.setHorizontalGroup(
@@ -73,13 +111,18 @@ public class ProdukUI extends javax.swing.JFrame {
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(labelBrand1)
+                        .addGap(45, 45, 45)
+                        .addComponent(labelBrand2))
                     .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addComponent(TambahProduk)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(CariProduk))
-                    .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(ResultPane)
+                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ResultPane, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(MainPanelLayout.createSequentialGroup()
+                                .addComponent(TambahProduk)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(CariProduk))
                             .addGroup(MainPanelLayout.createSequentialGroup()
                                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(idProduk)
@@ -97,10 +140,11 @@ public class ProdukUI extends javax.swing.JFrame {
                                 .addGap(28, 28, 28)
                                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(HargaField)
-                                    .addComponent(KemasanField, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Rp)))
-                .addContainerGap(111, Short.MAX_VALUE))
+                                    .addComponent(KemasanField, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Rp)))
+                        .addGap(0, 114, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,7 +171,11 @@ public class ProdukUI extends javax.swing.JFrame {
                     .addComponent(TambahProduk)
                     .addComponent(CariProduk))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ResultPane, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                .addComponent(ResultPane, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelBrand1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelBrand2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -135,7 +183,9 @@ public class ProdukUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,44 +198,7 @@ public class ProdukUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ProdukUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ProdukUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ProdukUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ProdukUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /*
-         * Create and display the form
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new ProdukUI().setVisible(true);
-            }
-        });
-    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CariProduk;
     private javax.swing.JLabel Harga;
@@ -202,5 +215,7 @@ public class ProdukUI extends javax.swing.JFrame {
     private javax.swing.JLabel Unit;
     private javax.swing.JTextField UnitField;
     private javax.swing.JLabel idProduk;
+    private javax.swing.JLabel labelBrand1;
+    private javax.swing.JLabel labelBrand2;
     // End of variables declaration//GEN-END:variables
 }

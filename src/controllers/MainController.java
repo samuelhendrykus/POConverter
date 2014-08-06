@@ -10,7 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import utils.*;
-import views.GUI;
+import views.MainWindow;
+import views.POMain;
 
 /**
  *
@@ -22,14 +23,14 @@ public class MainController {
     public static final String LOGO_IMAGE = "images/logo.jpg";
     private static final String SETTING_FILE = "setting.txt";
     private static final String PO_FILE = "purchase_order.txt";
-    private GUI gui;
+    private MainWindow gui;
     private Preferences prefs;
     PurchaseOrderReader poReader;
 
     public MainController() {
         prefs = new Preferences();
         this.poReader = new PurchaseOrderReader();
-        gui = new GUI(this);    // launch the main window / main user interface
+        gui = new MainWindow(this);    // launch the main window / main user interface
     }
 
     public String[] getInputOutputFolderPaths() throws POCException {
@@ -83,10 +84,10 @@ public class MainController {
             sjg.generateSuratJalan(outputDirPath + "\\Surat Jalan\\", poReader.getDaftarPesanan());
             return true;
         } catch (DocumentException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(POMain.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         } catch (Exception ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(POMain.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }

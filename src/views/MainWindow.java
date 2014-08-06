@@ -4,7 +4,9 @@
  */
 package views;
 
-import javax.swing.ImageIcon;
+import controllers.MainController;
+import javax.swing.*;
+import utils.POCException;
 
 /**
  *
@@ -12,14 +14,38 @@ import javax.swing.ImageIcon;
  */
 public class MainWindow extends javax.swing.JFrame {
     ImageIcon icon;
+    private MainController mainController;
     /**
      * Creates new form MainWindow
      */
-    public MainWindow() {
+    public MainWindow(MainController main) {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
+            JOptionPane.showMessageDialog(this, "Failed to set Look and Feel", "GUI Exception", JOptionPane.WARNING_MESSAGE);
+        }
         initComponents();
+        mainController = main;
         icon = new ImageIcon("images\\carrefourlogo.jpg");
         this.LogoPanel.add(new Logo(icon.getImage()));
         this.LogoPanel.repaint();
+        
+        this.setTitle("PO Converter");
+        
+        // launch the window  
+        try{
+            this.setIconImage(mainController.getIconImage());
+//            this.setIconImage(new ImageIcon(getClass().getResource("/abc/icon.png")).getImage());
+        }catch(POCException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), e.getTitle(), JOptionPane.WARNING_MESSAGE);
+        }
+        pack();
+        validate();
+        //setExtendedState(Frame.MAXIMIZED_BOTH);   // for full screen
+        setLocationRelativeTo(null);    // centering the window
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        setSize(500, 500);
+        setVisible(true);       
     }
 
     /**
@@ -36,9 +62,12 @@ public class MainWindow extends javax.swing.JFrame {
         labelBrand2 = new javax.swing.JLabel();
         LogoPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        FileMenu = new javax.swing.JMenu();
+        POConverterMenu = new javax.swing.JMenu();
+        BuatOrder = new javax.swing.JMenuItem();
+        Pengaturan = new javax.swing.JMenuItem();
+        ProdukMenu = new javax.swing.JMenu();
+        Produk = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,14 +119,45 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        FileMenu.setText("File");
+        jMenuBar1.add(FileMenu);
 
-        jMenu2.setText("PO Converter");
-        jMenuBar1.add(jMenu2);
+        POConverterMenu.setText("PO Converter");
+        POConverterMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                POConverterMenuActionPerformed(evt);
+            }
+        });
 
-        jMenu3.setText("Produk");
-        jMenuBar1.add(jMenu3);
+        BuatOrder.setText("Buat Order");
+        BuatOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuatOrderActionPerformed(evt);
+            }
+        });
+        POConverterMenu.add(BuatOrder);
+
+        Pengaturan.setText("Pengaturan");
+        Pengaturan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PengaturanActionPerformed(evt);
+            }
+        });
+        POConverterMenu.add(Pengaturan);
+
+        jMenuBar1.add(POConverterMenu);
+
+        ProdukMenu.setText("Produk");
+
+        Produk.setText("Produk");
+        Produk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProdukActionPerformed(evt);
+            }
+        });
+        ProdukMenu.add(Produk);
+
+        jMenuBar1.add(ProdukMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -115,52 +175,39 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void BuatOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuatOrderActionPerformed
+        // TODO add your handling code here:
+        POMain po = new POMain(this.mainController);
+        
+        
+    }//GEN-LAST:event_BuatOrderActionPerformed
+
+    private void POConverterMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_POConverterMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_POConverterMenuActionPerformed
+
+    private void PengaturanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PengaturanActionPerformed
+        // TODO add your handling code here:
+        POSetting setting = new POSetting(this.mainController);
+    }//GEN-LAST:event_PengaturanActionPerformed
+
+    private void ProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProdukActionPerformed
+        // TODO add your handling code here:
+        ProdukUI produk = new ProdukUI(mainController);
+    }//GEN-LAST:event_ProdukActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /*
-         * Create and display the form
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new MainWindow().setVisible(true);
-            }
-        });
-    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem BuatOrder;
+    private javax.swing.JMenu FileMenu;
     private javax.swing.JPanel LogoPanel;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu POConverterMenu;
+    private javax.swing.JMenuItem Pengaturan;
+    private javax.swing.JMenuItem Produk;
+    private javax.swing.JMenu ProdukMenu;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelBrand1;
