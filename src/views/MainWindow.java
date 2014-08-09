@@ -67,7 +67,8 @@ public class MainWindow extends javax.swing.JFrame {
         BuatOrder = new javax.swing.JMenuItem();
         Pengaturan = new javax.swing.JMenuItem();
         ProdukMenu = new javax.swing.JMenu();
-        Produk = new javax.swing.JMenuItem();
+        TambahProduk = new javax.swing.JMenuItem();
+        CariProduk = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -149,13 +150,16 @@ public class MainWindow extends javax.swing.JFrame {
 
         ProdukMenu.setText("Produk");
 
-        Produk.setText("Produk");
-        Produk.addActionListener(new java.awt.event.ActionListener() {
+        TambahProduk.setText("Tambah Produk");
+        TambahProduk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProdukActionPerformed(evt);
+                TambahProdukActionPerformed(evt);
             }
         });
-        ProdukMenu.add(Produk);
+        ProdukMenu.add(TambahProduk);
+
+        CariProduk.setText("Cari Produk");
+        ProdukMenu.add(CariProduk);
 
         jMenuBar1.add(ProdukMenu);
 
@@ -191,10 +195,10 @@ public class MainWindow extends javax.swing.JFrame {
         POSetting setting = new POSetting(this.mainController);
     }//GEN-LAST:event_PengaturanActionPerformed
 
-    private void ProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProdukActionPerformed
+    private void TambahProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TambahProdukActionPerformed
         // TODO add your handling code here:
         ProdukUI produk = new ProdukUI(mainController);
-    }//GEN-LAST:event_ProdukActionPerformed
+    }//GEN-LAST:event_TambahProdukActionPerformed
 
     /**
      * @param args the command line arguments
@@ -202,12 +206,13 @@ public class MainWindow extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem BuatOrder;
+    private javax.swing.JMenuItem CariProduk;
     private javax.swing.JMenu FileMenu;
     private javax.swing.JPanel LogoPanel;
     private javax.swing.JMenu POConverterMenu;
     private javax.swing.JMenuItem Pengaturan;
-    private javax.swing.JMenuItem Produk;
     private javax.swing.JMenu ProdukMenu;
+    private javax.swing.JMenuItem TambahProduk;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelBrand1;

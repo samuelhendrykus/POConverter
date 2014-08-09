@@ -40,13 +40,18 @@
             <Property name="text" type="java.lang.String" value="Produk"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="Produk">
+            <MenuItem class="javax.swing.JMenuItem" name="TambahProduk">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Produk"/>
+                <Property name="text" type="java.lang.String" value="Tambah Produk"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ProdukActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TambahProdukActionPerformed"/>
               </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="CariProduk">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cari Produk"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>

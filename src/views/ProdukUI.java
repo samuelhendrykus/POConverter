@@ -4,7 +4,6 @@
  */
 package views;
 
-import Connection.SQLHandler;
 import controllers.MainController;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -18,7 +17,6 @@ import utils.POCException;
  */
 public class ProdukUI extends javax.swing.JFrame {
     private MainController mainController;
-    SQLHandler handler;
     /**
      * Creates new form ProdukUI
      */
@@ -30,7 +28,6 @@ public class ProdukUI extends javax.swing.JFrame {
         }
         mainController = main;
         initComponents();
-        handler = new SQLHandler();
         try{
             this.setIconImage(mainController.getIconImage());
 //            this.setIconImage(new ImageIcon(getClass().getResource("/abc/icon.png")).getImage());
@@ -72,10 +69,10 @@ public class ProdukUI extends javax.swing.JFrame {
         Unit = new javax.swing.JLabel();
         UnitField = new javax.swing.JTextField();
         TambahProduk = new javax.swing.JButton();
-        ResultPane = new javax.swing.JScrollPane();
-        CariProduk = new javax.swing.JButton();
         labelBrand1 = new javax.swing.JLabel();
         labelBrand2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Produk");
@@ -96,13 +93,16 @@ public class ProdukUI extends javax.swing.JFrame {
 
         TambahProduk.setText("Tambah Produk Baru");
 
-        CariProduk.setText("Cari Produk");
-
         labelBrand1.setFont(new java.awt.Font("Trajan Pro", 0, 11)); // NOI18N
         labelBrand1.setText("PO Converter");
 
         labelBrand2.setFont(new java.awt.Font("Trajan Pro", 0, 11)); // NOI18N
         labelBrand2.setText("| by Aristophanes A. Alvin & Samuel Hendrykus S. 2014");
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setEditable(false);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
@@ -111,40 +111,34 @@ public class ProdukUI extends javax.swing.JFrame {
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(labelBrand1)
-                        .addGap(45, 45, 45)
-                        .addComponent(labelBrand2))
+                    .addComponent(TambahProduk)
                     .addGroup(MainPanelLayout.createSequentialGroup()
                         .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ResultPane, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addComponent(TambahProduk)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CariProduk))
-                            .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(idProduk)
-                                    .addComponent(NamaProduk)
-                                    .addComponent(Unit))
-                                .addGap(31, 31, 31)
-                                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(IdProdukField)
-                                    .addComponent(NamaProdukField)
-                                    .addComponent(UnitField, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
-                                .addGap(73, 73, 73)
-                                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Harga)
-                                    .addComponent(Kemasan))
-                                .addGap(28, 28, 28)
-                                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(HargaField)
-                                    .addComponent(KemasanField, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Rp)))
-                        .addGap(0, 114, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(idProduk)
+                            .addComponent(NamaProduk)
+                            .addComponent(Unit))
+                        .addGap(31, 31, 31)
+                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(IdProdukField)
+                            .addComponent(NamaProdukField)
+                            .addComponent(UnitField, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+                        .addGap(73, 73, 73)
+                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Harga)
+                            .addComponent(Kemasan))
+                        .addGap(28, 28, 28)
+                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(HargaField)
+                            .addComponent(KemasanField, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Rp))
+                    .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(MainPanelLayout.createSequentialGroup()
+                            .addComponent(labelBrand1)
+                            .addGap(45, 45, 45)
+                            .addComponent(labelBrand2))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,12 +161,10 @@ public class ProdukUI extends javax.swing.JFrame {
                     .addComponent(Unit)
                     .addComponent(UnitField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TambahProduk)
-                    .addComponent(CariProduk))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ResultPane, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                .addComponent(TambahProduk)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelBrand1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelBrand2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -183,9 +175,7 @@ public class ProdukUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,7 +190,6 @@ public class ProdukUI extends javax.swing.JFrame {
      */
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton CariProduk;
     private javax.swing.JLabel Harga;
     private javax.swing.JTextField HargaField;
     private javax.swing.JTextField IdProdukField;
@@ -209,12 +198,13 @@ public class ProdukUI extends javax.swing.JFrame {
     private javax.swing.JPanel MainPanel;
     private javax.swing.JLabel NamaProduk;
     private javax.swing.JTextField NamaProdukField;
-    private javax.swing.JScrollPane ResultPane;
     private javax.swing.JLabel Rp;
     private javax.swing.JButton TambahProduk;
     private javax.swing.JLabel Unit;
     private javax.swing.JTextField UnitField;
     private javax.swing.JLabel idProduk;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel labelBrand1;
     private javax.swing.JLabel labelBrand2;
     // End of variables declaration//GEN-END:variables
