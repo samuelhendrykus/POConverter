@@ -75,7 +75,7 @@ public class FindProductUI extends javax.swing.JFrame {
                             .addComponent(CariBerdasarkan, 0, 450, Short.MAX_VALUE)
                             .addComponent(ValuesField)))
                     .addComponent(ResultPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
