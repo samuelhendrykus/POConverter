@@ -24,8 +24,8 @@ public class SqlHandler {
     private Statement statement = null;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
-    private final String user = "po";
-    private final String password = "po";
+    private final String user = "root";
+    private final String password = "";
 
     public void connectToDataBase() throws Exception {
         try {
@@ -171,6 +171,16 @@ public class SqlHandler {
             }
         } catch (Exception e) {
             // don't throw now as it might leave following closables in undefined state
+        }
+    }
+    
+    public static void main(String[]args){
+        SqlHandler tes = new SqlHandler();
+        try {
+            tes.connectToDataBase();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("ohhh noooo");
         }
     }
 }
