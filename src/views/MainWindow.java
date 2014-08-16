@@ -63,12 +63,20 @@ public class MainWindow extends javax.swing.JFrame {
         LogoPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         FileMenu = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
         POConverterMenu = new javax.swing.JMenu();
         BuatOrder = new javax.swing.JMenuItem();
         Pengaturan = new javax.swing.JMenuItem();
         ProdukMenu = new javax.swing.JMenu();
         TambahProduk = new javax.swing.JMenuItem();
         CariProduk = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -123,6 +131,13 @@ public class MainWindow extends javax.swing.JFrame {
         FileMenu.setText("File");
         jMenuBar1.add(FileMenu);
 
+        jMenu3.setText("Pesanan");
+
+        jMenuItem5.setText("Pesanan");
+        jMenu3.add(jMenuItem5);
+
+        jMenuBar1.add(jMenu3);
+
         POConverterMenu.setText("PO Converter");
         POConverterMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -162,6 +177,26 @@ public class MainWindow extends javax.swing.JFrame {
         ProdukMenu.add(CariProduk);
 
         jMenuBar1.add(ProdukMenu);
+
+        jMenu1.setText("Supplier");
+
+        jMenuItem1.setText("Tambah Supplier");
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Cari Supplier");
+        jMenu1.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Toko");
+
+        jMenuItem3.setText("Tambah Toko");
+        jMenu2.add(jMenuItem3);
+
+        jMenuItem4.setText("Cari Toko");
+        jMenu2.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -213,7 +248,15 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem Pengaturan;
     private javax.swing.JMenu ProdukMenu;
     private javax.swing.JMenuItem TambahProduk;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelBrand1;
     private javax.swing.JLabel labelBrand2;
