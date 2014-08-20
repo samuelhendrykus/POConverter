@@ -4,13 +4,6 @@
  */
 package views;
 
-import controllers.MainController;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import utils.POCException;
-
 /**
  *
  * @author samuelhendrykus
@@ -20,30 +13,8 @@ public class FindProductUI extends javax.swing.JFrame {
     /**
      * Creates new form FindProductUI
      */
-    public FindProductUI(MainController mainController) {
-        try{
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
-            JOptionPane.showMessageDialog(this, "Failed to set Look and Feel", "GUI Exception", JOptionPane.WARNING_MESSAGE);
-        }
-        
+    public FindProductUI() {
         initComponents();
-        
-        try{
-            this.setIconImage(mainController.getIconImage());
-//            this.setIconImage(new ImageIcon(getClass().getResource("/abc/icon.png")).getImage());
-        }catch(POCException e){
-            JOptionPane.showMessageDialog(this, e.getMessage(), e.getTitle(), JOptionPane.WARNING_MESSAGE);
-        }
-        this.setTitle("Cari Produk");
-        
-        pack();
-        validate();
-        //setExtendedState(Frame.MAXIMIZED_BOTH);   // for full screen
-        setLocationRelativeTo(null);    // centering the window
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//        setSize(500, 500);
-        setVisible(true);
     }
 
     /**
@@ -142,7 +113,44 @@ public class FindProductUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
+    public static void main(String args[]) {
+        /*
+         * Set the Nimbus look and feel
+         */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /*
+         * If Nimbus (introduced in Java SE 6) is not available, stay with the
+         * default look and feel. For details see
+         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(FindProductUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(FindProductUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(FindProductUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FindProductUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /*
+         * Create and display the form
+         */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                new FindProductUI().setVisible(true);
+            }
+        });
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox CariBerdasarkan;
     private javax.swing.JLabel CariProduk;

@@ -34,7 +34,7 @@ public class ProdukUI extends javax.swing.JFrame {
         }catch(POCException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), e.getTitle(), JOptionPane.WARNING_MESSAGE);
         }
-        this.setTitle("Produk");
+        this.setTitle("PO Converter");
         
         // launch the window  
       

@@ -134,11 +134,6 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu3.setText("Pesanan");
 
         jMenuItem5.setText("Pesanan");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
-            }
-        });
         jMenu3.add(jMenuItem5);
 
         jMenuBar1.add(jMenu3);
@@ -179,11 +174,6 @@ public class MainWindow extends javax.swing.JFrame {
         ProdukMenu.add(TambahProduk);
 
         CariProduk.setText("Cari Produk");
-        CariProduk.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CariProdukActionPerformed(evt);
-            }
-        });
         ProdukMenu.add(CariProduk);
 
         jMenuBar1.add(ProdukMenu);
@@ -191,19 +181,9 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu1.setText("Supplier");
 
         jMenuItem1.setText("Tambah Supplier");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
         jMenu1.add(jMenuItem1);
 
         jMenuItem2.setText("Cari Supplier");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
         jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
@@ -211,19 +191,9 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu2.setText("Toko");
 
         jMenuItem3.setText("Tambah Toko");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
         jMenu2.add(jMenuItem3);
 
         jMenuItem4.setText("Cari Toko");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
         jMenu2.add(jMenuItem4);
 
         jMenuBar1.add(jMenu2);
@@ -264,36 +234,6 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
         ProdukUI produk = new ProdukUI(mainController);
     }//GEN-LAST:event_TambahProdukActionPerformed
-
-    private void CariProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CariProdukActionPerformed
-        // TODO add your handling code here:
-        FindProductUI ui = new FindProductUI(mainController);
-    }//GEN-LAST:event_CariProdukActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-        AddSupplier ui = new AddSupplier(mainController);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-        FindSupplier ui = new FindSupplier(mainController);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
-        addToko ui = new addToko(mainController);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
-        FindToko ui = new FindToko(mainController);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        // TODO add your handling code here:
-        Pesanan ui = new Pesanan(mainController);
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
