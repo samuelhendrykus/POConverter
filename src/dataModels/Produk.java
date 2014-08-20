@@ -14,7 +14,7 @@ import java.util.ListIterator;
  */
 public class Produk 
 {
-    public String nama, satuan;
+    public String nama, satuan, kodeBarang;
     public double hargaUnit;
     private LinkedList<Pesanan> pesanan;
     
@@ -23,23 +23,25 @@ public class Produk
      * @param nama The name of the product.
      * @param satuan The unit of the product (KG, PCS, etc).
      * @param harga The unit price of the product.
+     * @param kodeBarang the code of the product.
      */
-    public Produk(String nama, String satuan, double harga)
+    public Produk(String nama, String satuan, double harga, String kodeBarang)
     {
         this.nama = nama;
         this.satuan = satuan;
+        this.kodeBarang = kodeBarang;
         hargaUnit = harga;
         pesanan = new LinkedList<>();
     }
     
     public boolean tambahPesanan(PurchaseOrder order, double kuantitas)
     {
-        if(order.namaToko.trim().isEmpty() || kuantitas < 0.0)
+        if(order.toko.nama.trim().isEmpty() || kuantitas < 0.0)
             return false;
         
         if(pesanan.size() == 0)
         {
-            Pesanan p = new Pesanan(order.namaToko, order.nomorPO, kuantitas);
+            Pesanan p = new Pesanan(order.toko.nama, order.nomorPO, kuantitas);
             pesanan.add(p);
             return true;
         }
@@ -50,7 +52,7 @@ public class Produk
             while(lit.hasNext())
             {
                 Pesanan p = (Pesanan) lit.next();
-                if(p.namaToko.equals(order.namaToko))
+                if(p.namaToko.equals(order.toko.nama))
                 {
                     p.kuantitas += kuantitas;
                     lit.set(p);
@@ -58,7 +60,7 @@ public class Produk
                 }
             }
             //if no same Pesanan is found, create a new one
-            Pesanan p = new Pesanan(order.namaToko, order.nomorPO, kuantitas);
+            Pesanan p = new Pesanan(order.toko.nama, order.nomorPO, kuantitas);
             pesanan.add(p);
             return true;
         }
@@ -70,7 +72,8 @@ public class Produk
         
         for(Pesanan p : pesanan)
         {
-            if(p.namaToko.equals(order.namaToko) && p.nomorPO.equals(order.nomorPO))
+            System.out.println(p.namaToko + " " + order.toko.nama);
+            if(p.namaToko.equals(order.toko.nama) && p.nomorPO.equals(order.nomorPO))
             {
                 return p.kuantitas;
             }
@@ -88,7 +91,7 @@ public class Produk
             if(p.namaToko.equals(namaToko))
             {
                 double res = p.kuantitas;
-                it.remove();
+//                it.remove();
                 return res;
             }
         }
@@ -110,11 +113,11 @@ public class Produk
         String nomorPO;
         double kuantitas;
         
-        Pesanan(String namaToko, double kuantitas)
-        {
-            this.namaToko = namaToko;
-            this.kuantitas = kuantitas;
-        }
+//        Pesanan(String namaToko, double kuantitas)
+//        {
+//            this.namaToko = namaToko;
+//            this.kuantitas = kuantitas;
+//        }
         
         Pesanan(String namaToko, String nomorPO, double kuantitas)
         {

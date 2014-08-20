@@ -34,7 +34,7 @@ public class DaftarPesanan
         daftarPO = new ArrayDeque<>();
     }
     
-    public boolean tambahPesanan(String namaProduk, String satuan, double hargaUnit, String namaToko, String nomorPO, String tglKirim, double kuantitas)
+    public boolean tambahPesanan(String namaProduk, String satuan, double hargaUnit, String kodeBarang, String namaToko, String kodeToko, String kodeDept, String nomorPO, String tglKirim, String tglPesan, String kodeSupp, double kuantitas)
     {
         //VALIDITY CHECKING
         //make sure no empty or nonsense params
@@ -45,7 +45,7 @@ public class DaftarPesanan
             return false;
         
         //NOTE the Toko's name
-        PurchaseOrder po = new PurchaseOrder(namaToko, nomorPO, tglKirim);
+        PurchaseOrder po = new PurchaseOrder(namaToko, kodeToko, kodeDept, nomorPO, tglKirim, tglPesan, kodeSupp);
         if(!daftarPO.contains(po)){
             daftarPO.add(po);
         }
@@ -58,7 +58,7 @@ public class DaftarPesanan
         if(daftarProduk.get(idxProductList).size() == 0)
         {
             //list is empty, add new
-            Produk p = new Produk(namaProduk, satuan, hargaUnit);
+            Produk p = new Produk(namaProduk, satuan, hargaUnit, kodeBarang);
             p.tambahPesanan(po, kuantitas);
             daftarProduk.get(idxProductList).add(p);
             return true;
@@ -78,7 +78,7 @@ public class DaftarPesanan
                 }
             }
             //list doesn't have the Produk yet, add new
-            Produk p = new Produk(namaProduk, satuan, hargaUnit);
+            Produk p = new Produk(namaProduk, satuan, hargaUnit, kodeBarang);
             p.tambahPesanan(po, kuantitas);
             daftarProduk.get(idxProductList).add(p);
             return true;
@@ -91,17 +91,17 @@ public class DaftarPesanan
         for(PurchaseOrder po : daftarPO)
         {
             if(daftarNama.isEmpty())
-                daftarNama.add(po.namaToko);
+                daftarNama.add(po.toko.nama);
             else
             {
                 //check if the name already exists
                 for(int i=0; i<daftarNama.size(); i++)
                 {
-                    if(daftarNama.get(i).equals(po.namaToko))
+                    if(daftarNama.get(i).equals(po.toko.nama))
                         break;
                     else if(i == daftarNama.size() - 1)
                     {
-                        daftarNama.add(po.namaToko);
+                        daftarNama.add(po.toko.nama);
                     }
                 }
             }

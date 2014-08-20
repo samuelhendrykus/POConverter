@@ -138,7 +138,7 @@ public class SuratJalanGenerator {
         cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         tableKepada.addCell(cell);
 
-        cell = new PdfPCell(new Phrase( order.namaToko, cambriaStandard));
+        cell = new PdfPCell(new Phrase( order.toko.nama, cambriaStandard));
         cell.setBorder(0);
         cell.setBackgroundColor(new BaseColor(255, 255, 255));
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);

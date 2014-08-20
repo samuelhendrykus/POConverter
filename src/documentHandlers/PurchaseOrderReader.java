@@ -24,7 +24,7 @@ import dataModels.DaftarPesanan;
 public class PurchaseOrderReader 
 {    
     private DaftarPesanan daftarPesanan;
-    private String namaTokoSekarang, nomorPOSekarang, tanggalKirimSekarang;
+    private String namaTokoSekarang, kodeToko, kodeDepartemen, nomorPOSekarang, tanggalKirimSekarang, tanggalPesan, kodeSupp;
     
     public PurchaseOrderReader()
     {
@@ -82,14 +82,19 @@ public class PurchaseOrderReader
         String line = sc.nextLine();
         while(sc.hasNextLine())
         {            
-            if(line.matches("Pengiriman Ke.*"))
+            if(line.matches("No Fax Supplier")){
+                kodeToko = sc.nextLine();
+                kodeDepartemen = sc.nextLine();
+                line = sc.nextLine();
+            }else if(line.matches("Pengiriman Ke.*"))
             {
                 //get the Toko's name                    
                 String[] words = line.split(" Ke ");
                 namaTokoSekarang = words[1];
                 nomorPOSekarang = sc.nextLine();
-                sc.nextLine();
+                tanggalPesan = sc.nextLine();
                 tanggalKirimSekarang = sc.nextLine();
+                kodeSupp = sc.nextLine();
                 line = sc.nextLine();
             }
             else if(line.equals("No"))
@@ -104,7 +109,7 @@ public class PurchaseOrderReader
             {                
                 do{
                     line = sc.nextLine();
-                }while(!line.matches("Pengiriman Ke.*") && !line.equals("No") && sc.hasNextLine());
+                }while(!line.matches("No Fax Supplier") && !line.matches("Pengiriman Ke.*") && !line.equals("No") && sc.hasNextLine());
             }
         }        
     }
@@ -129,11 +134,11 @@ public class PurchaseOrderReader
                 //scan the line number
                 line = sc.nextLine();
                 Integer.parseInt(line);
-
                 //scan the unit
                 line = sc.nextLine();
                 String[] sat = line.split(" ");
                 if(sat.length < 2 || sat.length > 3) break;
+                String kodeBarang = sat[0];
                 String satuan = (sat.length == 2 ? sat[1].substring(1,3) : sat[2]);                
 
                 //validate the numbers line
@@ -153,17 +158,20 @@ public class PurchaseOrderReader
                 //scan the unit price                
                 somenumbers[4] = somenumbers[4].replaceAll(",", "");
                 double hargaUnit = Double.parseDouble(somenumbers[4]);
-                
                 //dump the closing line
-                sc.nextLine();
                 
+                //Kode Produk
+                kodeBarang = sc.nextLine().concat(kodeBarang);
+//                System.out.println(kodeBarang);
                 //CREATE the Pesanan object
-                boolean create = daftarPesanan.tambahPesanan(nama, satuan, hargaUnit, namaTokoSekarang, nomorPOSekarang, tanggalKirimSekarang, kuantitas);
+                boolean create = daftarPesanan.tambahPesanan(nama, satuan, hargaUnit, kodeBarang, namaTokoSekarang, kodeToko, kodeDepartemen, nomorPOSekarang, tanggalKirimSekarang, tanggalPesan, kodeSupp, kuantitas);               
+
                 if(create == false) break;
             }
             catch(Exception e)
             {         
                 //e.printStackTrace();
+//                System.out.println(e.getMessage());
                 break;
             }            
         }

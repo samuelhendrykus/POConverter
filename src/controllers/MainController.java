@@ -1,5 +1,6 @@
 package controllers;
 
+import Connection.SqlHandler;
 import com.itextpdf.text.DocumentException;
 import dataModels.PurchaseOrder;
 import documentHandlers.DaftarBelanjaGenerator;
@@ -25,9 +26,11 @@ public class MainController {
     private static final String PO_FILE = "purchase_order.txt";
     private MainWindow gui;
     private Preferences prefs;
-    PurchaseOrderReader poReader;
+    private PurchaseOrderReader poReader;
+    private SqlHandler sqlHandler;
 
     public MainController() {
+        sqlHandler = new SqlHandler();
         prefs = new Preferences();
         this.poReader = new PurchaseOrderReader();
         gui = new MainWindow(this);    // launch the main window / main user interface
@@ -48,10 +51,11 @@ public class MainController {
 
             poReader.parsePdfToTxt(inputFiles, PO_FILE);
             poReader.parseTxtToObjects(PO_FILE);
-            dbGenerator.generateDaftarBelanja(outputDirPath.concat("\\Daftar Belanja\\"), poReader.getDaftarPesanan());
+            dbGenerator.generateDaftarBelanja(sqlHandler, outputDirPath.concat("\\Daftar Belanja\\"), poReader.getDaftarPesanan());
             return true;
         } catch (Exception e) {
 //            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
@@ -63,7 +67,7 @@ public class MainController {
             poReader.parseTxtToObjects("purchase_order.txt");
 
             for (PurchaseOrder po : poReader.getDaftarPesanan().getDaftarPO()) {
-                tablemodel.addRow(new Object[]{po.nomorPO, po.tanggalKirim, po.namaToko, new String(" ")});
+                tablemodel.addRow(new Object[]{po.nomorPO, po.tanggalKirim, po.toko.nama, new String(" ")});
             }
             return true;
         } catch (Exception e) {
