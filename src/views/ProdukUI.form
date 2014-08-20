@@ -167,6 +167,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Tambah Produk Baru"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TambahProdukActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="labelBrand1">
           <Properties>

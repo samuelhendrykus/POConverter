@@ -4,6 +4,7 @@
  */
 package views;
 
+import Connection.SqlHandler;
 import controllers.MainController;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -16,11 +17,12 @@ import utils.POCException;
  * @author samuelhendrykus
  */
 public class addToko extends javax.swing.JFrame {
-
+    private MainController mainController;
+    private SqlHandler handler;
     /**
      * Creates new form addToko
      */
-    public addToko(MainController mainController) {
+    public addToko(MainController mainController, SqlHandler handler) {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
@@ -28,6 +30,9 @@ public class addToko extends javax.swing.JFrame {
         }
         
         initComponents();
+        
+        mainController = mainController;
+        this.handler = handler;
         
         try{
             this.setIconImage(mainController.getIconImage());
@@ -89,6 +94,11 @@ public class addToko extends javax.swing.JFrame {
         alamatPane.setViewportView(alamatField);
 
         tambah.setText("Tambah Toko");
+        tambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tambahActionPerformed(evt);
+            }
+        });
 
         resultArea.setColumns(20);
         resultArea.setEditable(false);
@@ -169,6 +179,17 @@ public class addToko extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahActionPerformed
+        try {
+            // TODO add your handling code here:
+            handler.connectToDataBase();
+            handler.addToko(this.idTokoField.getText(), this.idDeptField.getText(), this.namaField.getText(), this.alamatField.getText(), this.teleponField.getText());
+            this.resultArea.setText(this.namaField.getText() + " berhasil ditambahkan.");
+        } catch (Exception ex) {
+            this.resultArea.setText(ex.getMessage());
+        }
+    }//GEN-LAST:event_tambahActionPerformed
 
     /**
      * @param args the command line arguments

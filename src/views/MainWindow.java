@@ -4,6 +4,7 @@
  */
 package views;
 
+import Connection.SqlHandler;
 import controllers.MainController;
 import javax.swing.*;
 import utils.POCException;
@@ -15,10 +16,11 @@ import utils.POCException;
 public class MainWindow extends javax.swing.JFrame {
     ImageIcon icon;
     private MainController mainController;
+    private SqlHandler handler;
     /**
      * Creates new form MainWindow
      */
-    public MainWindow(MainController main) {
+    public MainWindow(MainController main, SqlHandler handler) {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
@@ -26,6 +28,8 @@ public class MainWindow extends javax.swing.JFrame {
         }
         initComponents();
         mainController = main;
+        this.handler = handler;
+        
         icon = new ImageIcon("images\\carrefourlogo.jpg");
         this.LogoPanel.add(new Logo(icon.getImage()));
         this.LogoPanel.repaint();
@@ -262,37 +266,37 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void TambahProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TambahProdukActionPerformed
         // TODO add your handling code here:
-        ProdukUI produk = new ProdukUI(mainController);
+        ProdukUI produk = new ProdukUI(mainController, handler);
     }//GEN-LAST:event_TambahProdukActionPerformed
 
     private void CariProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CariProdukActionPerformed
         // TODO add your handling code here:
-        FindProductUI ui = new FindProductUI(mainController);
+        FindProductUI ui = new FindProductUI(mainController, handler);
     }//GEN-LAST:event_CariProdukActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        AddSupplier ui = new AddSupplier(mainController);
+        AddSupplier ui = new AddSupplier(mainController, handler);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        FindSupplier ui = new FindSupplier(mainController);
+        FindSupplier ui = new FindSupplier(mainController, handler);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        addToko ui = new addToko(mainController);
+        addToko ui = new addToko(mainController, handler);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
-        FindToko ui = new FindToko(mainController);
+        FindToko ui = new FindToko(mainController, handler);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
-        Pesanan ui = new Pesanan(mainController);
+        Pesanan ui = new Pesanan(mainController, handler);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**

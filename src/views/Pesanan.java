@@ -4,6 +4,7 @@
  */
 package views;
 
+import Connection.SqlHandler;
 import com.qt.datapicker.DatePicker;
 import controllers.MainController;
 import java.awt.Event;
@@ -11,6 +12,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import utils.POCException;
 
@@ -19,11 +22,12 @@ import utils.POCException;
  * @author samuelhendrykus
  */
 public class Pesanan extends javax.swing.JFrame {
-
+    private MainController mainController;
+    private SqlHandler handler;
     /**
      * Creates new form Pesanan
      */
-    public Pesanan(MainController mainController) {
+    public Pesanan(MainController mainController, SqlHandler handler) {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
@@ -31,6 +35,9 @@ public class Pesanan extends javax.swing.JFrame {
         }
         
         initComponents();
+        
+        mainController = mainController;
+        this.handler = handler;
         
         try{
             this.setIconImage(mainController.getIconImage());
@@ -110,6 +117,11 @@ public class Pesanan extends javax.swing.JFrame {
         });
 
         cari.setText("Cari");
+        cari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cariActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -213,6 +225,16 @@ public class Pesanan extends javax.swing.JFrame {
         picker.register(this.tanggalKirimField);
         picker.start(this.datePicker2);
     }//GEN-LAST:event_datePicker2ActionPerformed
+
+    private void cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariActionPerformed
+        try {
+            // TODO add your handling code here:
+            handler.connectToDataBase();
+            
+        } catch (Exception ex) {
+            Logger.getLogger(Pesanan.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_cariActionPerformed
 
     class ObservingTextField extends JTextField implements Observer {
     private static final long serialVersionUID = -9121215994812342536L;

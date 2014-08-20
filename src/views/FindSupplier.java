@@ -4,7 +4,10 @@
  */
 package views;
 
+import Connection.SqlHandler;
 import controllers.MainController;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -16,11 +19,12 @@ import utils.POCException;
  * @author samuelhendrykus
  */
 public class FindSupplier extends javax.swing.JFrame {
-
+    private MainController mainController;
+    private SqlHandler handler;
     /**
      * Creates new form FindSupplier
      */
-    public FindSupplier(MainController mainController) {
+    public FindSupplier(MainController mainController, SqlHandler handler) {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
@@ -28,6 +32,9 @@ public class FindSupplier extends javax.swing.JFrame {
         }
         
         initComponents();
+        
+        mainController = mainController;
+        this.handler = handler;
         
         try{
             this.setIconImage(mainController.getIconImage());
@@ -73,6 +80,11 @@ public class FindSupplier extends javax.swing.JFrame {
         Nilai.setText("Nilai");
 
         cariButton.setText("Cari");
+        cariButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cariButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -125,6 +137,16 @@ public class FindSupplier extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cariButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariButtonActionPerformed
+        try {
+            // TODO add your handling code here:
+            handler.connectToDataBase();
+            handler.findSupplier(this.field.getSelectedItem().toString(), this.value.getText());
+        } catch (Exception ex) {
+            Logger.getLogger(FindSupplier.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_cariButtonActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

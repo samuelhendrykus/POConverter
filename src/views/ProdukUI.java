@@ -4,7 +4,10 @@
  */
 package views;
 
+import Connection.SqlHandler;
 import controllers.MainController;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -17,20 +20,23 @@ import utils.POCException;
  */
 public class ProdukUI extends javax.swing.JFrame {
     private MainController mainController;
+    private SqlHandler handler;
     /**
      * Creates new form ProdukUI
      */
-    public ProdukUI(MainController main) {
+    public ProdukUI(MainController main, SqlHandler handler) {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
             JOptionPane.showMessageDialog(this, "Failed to set Look and Feel", "GUI Exception", JOptionPane.WARNING_MESSAGE);
         }
         mainController = main;
+        this.handler = handler;
+        
         initComponents();
+        
         try{
             this.setIconImage(mainController.getIconImage());
-//            this.setIconImage(new ImageIcon(getClass().getResource("/abc/icon.png")).getImage());
         }catch(POCException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), e.getTitle(), JOptionPane.WARNING_MESSAGE);
         }
@@ -40,10 +46,8 @@ public class ProdukUI extends javax.swing.JFrame {
       
         pack();
         validate();
-        //setExtendedState(Frame.MAXIMIZED_BOTH);   // for full screen
         setLocationRelativeTo(null);    // centering the window
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//        setSize(500, 500);
         setVisible(true);
     }
 
@@ -92,6 +96,11 @@ public class ProdukUI extends javax.swing.JFrame {
         Unit.setText("Unit");
 
         TambahProduk.setText("Tambah Produk Baru");
+        TambahProduk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TambahProdukActionPerformed(evt);
+            }
+        });
 
         labelBrand1.setFont(new java.awt.Font("Trajan Pro", 0, 11)); // NOI18N
         labelBrand1.setText("PO Converter");
@@ -184,6 +193,17 @@ public class ProdukUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void TambahProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TambahProdukActionPerformed
+        try {
+            // TODO add your handling code here:
+            handler.connectToDataBase();
+            boolean res = handler.addProduk(this.IdProdukField.getText(), this.NamaProdukField.getText(), this.HargaField.getText(), this.UnitField.getText(), this.KemasanField.getText());
+            this.jTextArea1.setText(this.NamaProdukField.getText() + " berhasil ditambahkan. " + res);
+        } catch (Exception ex) {
+            this.jTextArea1.setText(ex.getMessage());
+        }
+    }//GEN-LAST:event_TambahProdukActionPerformed
 
     /**
      * @param args the command line arguments

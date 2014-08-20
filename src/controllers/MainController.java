@@ -1,5 +1,6 @@
 package controllers;
 
+import Connection.SqlHandler;
 import com.itextpdf.text.DocumentException;
 import dataModels.PurchaseOrder;
 import documentHandlers.DaftarBelanjaGenerator;
@@ -30,7 +31,7 @@ public class MainController {
     public MainController() {
         prefs = new Preferences();
         this.poReader = new PurchaseOrderReader();
-        gui = new MainWindow(this);    // launch the main window / main user interface
+        gui = new MainWindow(this, new SqlHandler());    // launch the main window / main user interface
     }
 
     public String[] getInputOutputFolderPaths() throws POCException {

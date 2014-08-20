@@ -4,7 +4,10 @@
  */
 package views;
 
+import Connection.SqlHandler;
 import controllers.MainController;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -16,11 +19,12 @@ import utils.POCException;
  * @author samuelhendrykus
  */
 public class FindToko extends javax.swing.JFrame {
-
+    private MainController mainController;
+    private SqlHandler handler;
     /**
      * Creates new form FindToko
      */
-    public FindToko(MainController mainController) {
+    public FindToko(MainController mainController, SqlHandler handler) {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
@@ -28,6 +32,9 @@ public class FindToko extends javax.swing.JFrame {
         }
         
         initComponents();
+        
+        mainController = mainController;
+        this.handler = handler;
         
         try{
             this.setIconImage(mainController.getIconImage());
@@ -73,6 +80,11 @@ public class FindToko extends javax.swing.JFrame {
         nilai.setText("Nilai");
 
         cari.setText("Cari");
+        cari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cariActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -125,9 +137,17 @@ public class FindToko extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
+    private void cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariActionPerformed
+        try {
+            // TODO add your handling code here:
+            handler.connectToDataBase();
+            handler.findSupplier(this.field.getSelectedItem().toString(), this.value.getText());
+        } catch (Exception ex) {
+            Logger.getLogger(FindSupplier.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_cariActionPerformed
+
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cari;

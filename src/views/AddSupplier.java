@@ -4,7 +4,10 @@
  */
 package views;
 
+import Connection.SqlHandler;
 import controllers.MainController;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -16,11 +19,12 @@ import utils.POCException;
  * @author samuelhendrykus
  */
 public class AddSupplier extends javax.swing.JFrame {
-
+    private MainController mainController;
+    private SqlHandler handler;
     /**
      * Creates new form AddSupplier
      */
-    public AddSupplier(MainController mainController) {
+    public AddSupplier(MainController mainController, SqlHandler handler) {
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
@@ -28,6 +32,9 @@ public class AddSupplier extends javax.swing.JFrame {
         }
         
         initComponents();
+        
+        mainController = mainController;
+        this.handler = handler;
         
         try{
             this.setIconImage(mainController.getIconImage());
@@ -89,6 +96,11 @@ public class AddSupplier extends javax.swing.JFrame {
         fax.setText("Fax");
 
         tambahButton.setText("Tambah Supplier");
+        tambahButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tambahButtonActionPerformed(evt);
+            }
+        });
 
         resultArea.setColumns(20);
         resultArea.setEditable(false);
@@ -165,6 +177,18 @@ public class AddSupplier extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tambahButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahButtonActionPerformed
+        try {
+            // TODO add your handling code here:
+            handler.connectToDataBase();
+            handler.addSupplier(this.idSupplierField.getText(), this.namaSupplierField.getText(), this.alamatArea.getText(), this.teleponField.getText(), this.faxField.getText());
+            this.resultArea.setText(this.namaSupplierField.getText() + " berhasil ditambahkan.");
+        } catch (Exception ex) {
+            this.resultArea.setText(ex.getMessage());
+        }
+        
+    }//GEN-LAST:event_tambahButtonActionPerformed
 
     /**
      * @param args the command line arguments

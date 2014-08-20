@@ -24,8 +24,8 @@ public class SqlHandler {
     private Statement statement = null;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
-    private final String user = "root";
-    private final String password = "";
+    private final String user = "po";
+    private final String password = "po";
 
     public void connectToDataBase() throws Exception {
         try {
@@ -42,16 +42,18 @@ public class SqlHandler {
     public boolean addProduk(String idProduk, String nama, String harga, String unit, String kemasan) {
         try {
             connectToDataBase();
-            preparedStatement = connect.prepareStatement("insert into produk values (default, ?, ?, ?, ?, ?)");
+            preparedStatement = connect.prepareStatement("insert into produk values (?, ?, ?, ?, ?)");
             preparedStatement.setString(1, idProduk);
             preparedStatement.setString(2, nama);
             preparedStatement.setString(3, harga);
             preparedStatement.setString(4, unit);
             preparedStatement.setString(5, kemasan);
-            preparedStatement.execute();
+            preparedStatement.executeUpdate();
             close();
             return true;
         } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
             return false;
         }
     }
@@ -71,7 +73,7 @@ public class SqlHandler {
     public boolean addSupplier(String idSupplier, String namaSupplier, String alamat, String telepon, String fax) {
         try {
             connectToDataBase();
-            preparedStatement = connect.prepareStatement("insert into supplier values (default, ?, ?, ?, ?, ?)");
+            preparedStatement = connect.prepareStatement("insert into supplier values (?, ?, ?, ?, ?)");
             preparedStatement.setString(1, idSupplier);
             preparedStatement.setString(2, namaSupplier);
             preparedStatement.setString(3, alamat);
@@ -100,7 +102,7 @@ public class SqlHandler {
     public boolean addToko(String idToko, String idDepartemen, String namaToko, String alamat, String telepon) {
         try {
             connectToDataBase();
-            preparedStatement = connect.prepareStatement("insert into toko values (default, ?, ?, ?, ?, ?)");
+            preparedStatement = connect.prepareStatement("insert into toko values (?, ?, ?, ?, ?)");
             preparedStatement.setString(1, idToko);
             preparedStatement.setString(2, idDepartemen);
             preparedStatement.setString(3, namaToko);
@@ -129,7 +131,7 @@ public class SqlHandler {
     public boolean addPesanan(String idPesanan, String idToko, String idDepartemen, String idSupplier, String idProduk, Date tanggalPesanan, Date tanggalPengiriman, int banyak) {
         try {
             connectToDataBase();
-            preparedStatement = connect.prepareStatement("insert into pesanan values (default, ?, ?, ?, ?, ?, ?, ?, ?)");
+            preparedStatement = connect.prepareStatement("insert into pesanan values (?, ?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, idPesanan);
             preparedStatement.setString(2, idToko);
             preparedStatement.setString(3, idDepartemen);
