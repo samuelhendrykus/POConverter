@@ -6,12 +6,11 @@ package views;
 
 import Connection.SqlHandler;
 import controllers.MainController;
+import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import utils.POCException;
 
 /**
@@ -21,6 +20,8 @@ import utils.POCException;
 public class FindSupplier extends javax.swing.JFrame {
     private MainController mainController;
     private SqlHandler handler;
+    DefaultTableModel tablemodel;
+    JTable table;
     /**
      * Creates new form FindSupplier
      */
@@ -52,6 +53,27 @@ public class FindSupplier extends javax.swing.JFrame {
         setVisible(true);
     }
 
+    public void initTable() 
+    {
+        tablemodel = new DefaultTableModel();
+        this.table = new JTable(tablemodel) 
+        {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                if (column == 3) {
+                    return true;
+                }
+                return false;
+            }
+        };
+        tablemodel.addColumn("ID Supplier");
+        tablemodel.addColumn("Nama Supplier");
+        tablemodel.addColumn("Alamat");
+        tablemodel.addColumn("Telepon");
+        tablemodel.addColumn("Fax");     
+        this.resultPanel.add(this.table);
+        this.resultPanel.setViewportView(this.table);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,7 +89,7 @@ public class FindSupplier extends javax.swing.JFrame {
         Nilai = new javax.swing.JLabel();
         value = new javax.swing.JTextField();
         cariButton = new javax.swing.JButton();
-        ResultPane = new javax.swing.JScrollPane();
+        resultPanel = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,7 +116,7 @@ public class FindSupplier extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(ResultPane)
+                        .addComponent(resultPanel)
                         .addGroup(mainPanelLayout.createSequentialGroup()
                             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(CariBerdasarkan)
@@ -120,7 +142,7 @@ public class FindSupplier extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cariButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ResultPane, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                .addComponent(resultPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -142,9 +164,12 @@ public class FindSupplier extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             handler.connectToDataBase();
-            handler.findSupplier(this.field.getSelectedItem().toString(), this.value.getText());
+            ResultSet result = handler.findProduk(this.field.getSelectedItem().toString(), this.value.getText());
+            while(result.next()){
+                this.tablemodel.addRow(new Object[]{result.getString(0), result.getString(1), result.getString(2), result.getString(3), result.getString(4)});
+            }
         } catch (Exception ex) {
-            Logger.getLogger(FindSupplier.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FindProductUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_cariButtonActionPerformed
 
@@ -152,10 +177,10 @@ public class FindSupplier extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CariBerdasarkan;
     private javax.swing.JLabel Nilai;
-    private javax.swing.JScrollPane ResultPane;
     private javax.swing.JButton cariButton;
     private javax.swing.JComboBox field;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JScrollPane resultPanel;
     private javax.swing.JTextField value;
     // End of variables declaration//GEN-END:variables
 }

@@ -6,12 +6,16 @@ package views;
 
 import Connection.SqlHandler;
 import controllers.MainController;
+import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import utils.POCException;
 
 /**
@@ -21,6 +25,8 @@ import utils.POCException;
 public class FindProductUI extends javax.swing.JFrame {
     private MainController mainController;
     private SqlHandler handler;
+    DefaultTableModel tablemodel;
+    JTable table;
     /**
      * Creates new form FindProductUI
      */
@@ -30,7 +36,9 @@ public class FindProductUI extends javax.swing.JFrame {
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
             JOptionPane.showMessageDialog(this, "Failed to set Look and Feel", "GUI Exception", JOptionPane.WARNING_MESSAGE);
         }
-        
+        tablemodel = new DefaultTableModel();
+        table = new JTable(tablemodel);
+        this.resultPanel.add(table);
         initComponents();
         
         mainController = mainController;
@@ -52,6 +60,28 @@ public class FindProductUI extends javax.swing.JFrame {
 //        setSize(500, 500);
         setVisible(true);
     }
+    
+    public void initTable() 
+    {
+        tablemodel = new DefaultTableModel();
+        this.table = new JTable(tablemodel) 
+        {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                if (column == 3) {
+                    return true;
+                }
+                return false;
+            }
+        };
+        tablemodel.addColumn("ID Produk");
+        tablemodel.addColumn("Nama Produk");
+        tablemodel.addColumn("Harga");
+        tablemodel.addColumn("Unit");
+        tablemodel.addColumn("Kemasan");
+        this.resultPanel.add(this.table);
+        this.resultPanel.setViewportView(this.table);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,7 +98,7 @@ public class FindProductUI extends javax.swing.JFrame {
         Value = new javax.swing.JLabel();
         ValuesField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        ResultPanel = new javax.swing.JPanel();
+        resultPanel = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cari Produk");
@@ -88,25 +118,15 @@ public class FindProductUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout ResultPanelLayout = new javax.swing.GroupLayout(ResultPanel);
-        ResultPanel.setLayout(ResultPanelLayout);
-        ResultPanelLayout.setHorizontalGroup(
-            ResultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        ResultPanelLayout.setVerticalGroup(
-            ResultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 185, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
         MainPanelLayout.setHorizontalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(resultPanel)
+                    .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(MainPanelLayout.createSequentialGroup()
                             .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(CariProduk)
@@ -115,8 +135,7 @@ public class FindProductUI extends javax.swing.JFrame {
                             .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(CariBerdasarkan, 0, 307, Short.MAX_VALUE)
                                 .addComponent(ValuesField)))
-                        .addComponent(ResultPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jButton1))
+                        .addComponent(jButton1)))
                 .addContainerGap(62, Short.MAX_VALUE))
         );
         MainPanelLayout.setVerticalGroup(
@@ -132,8 +151,8 @@ public class FindProductUI extends javax.swing.JFrame {
                     .addComponent(ValuesField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addGap(13, 13, 13)
-                .addComponent(ResultPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(resultPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -155,7 +174,10 @@ public class FindProductUI extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             handler.connectToDataBase();
-            handler.findProduk(this.CariBerdasarkan.getSelectedItem().toString(), this.ValuesField.getText());
+            ResultSet result = handler.findProduk(this.CariBerdasarkan.getSelectedItem().toString(), this.ValuesField.getText());
+            while(result.next()){
+                this.tablemodel.addRow(new Object[]{result.getString(0), result.getString(1), result.getString(2), result.getString(3), result.getString(4)});
+            }
         } catch (Exception ex) {
             Logger.getLogger(FindProductUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -170,9 +192,9 @@ public class FindProductUI extends javax.swing.JFrame {
     private javax.swing.JComboBox CariBerdasarkan;
     private javax.swing.JLabel CariProduk;
     private javax.swing.JPanel MainPanel;
-    private javax.swing.JPanel ResultPanel;
     private javax.swing.JLabel Value;
     private javax.swing.JTextField ValuesField;
     private javax.swing.JButton jButton1;
+    private javax.swing.JScrollPane resultPanel;
     // End of variables declaration//GEN-END:variables
 }

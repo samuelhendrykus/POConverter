@@ -148,11 +148,18 @@ public class SqlHandler {
         }
     }
     
-    public ResultSet findPesanan(String field, String value) {
+    public ResultSet findPesanan(String field, String idPesanan, String idToko, String idDepartemen, String idSuplier, String tanggalPesan, String tanggalKirim) {
         try {
             connectToDataBase();
             statement = connect.createStatement();
-            ResultSet result = statement.executeQuery("select * from pesanan where '" + field + "'='" + value + "'");
+            java.util.Date tgglpesan = new java.util.Date(tanggalPesan);
+            java.util.Date tgglkirim = new java.util.Date(tanggalKirim);
+            ResultSet result = statement.executeQuery("select * from pesanan where 'IdPesanan' = '" + idPesanan + "' union"
+                    + "select from pesanan where 'IdToko' = '" + idToko + "' union "
+                    + "select from pesanan where 'IdDepartemen' = '" + idDepartemen + "' union" 
+                    + "select from pesanan where 'IdSupplier' = '" + idSuplier + "' union" 
+                    + "select from pesanan where 'TanggalPesan' = '" + new Date(tgglpesan.getTime()) + "' union"
+                    + "select from pesanan where 'TanggalKirim' = '" + new Date(tgglkirim.getTime()) + "'");
             close();
             return result;
         } catch (Exception ex) {

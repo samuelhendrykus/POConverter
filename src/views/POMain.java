@@ -374,18 +374,6 @@ public class POMain extends javax.swing.JFrame {
             for (int i = 0; i < inputFiles.length; i++) {
                 inputFiles[i] = this.input + "\\" + listfile.get(i);
             }
-//            try {
-//                reader = new PurchaseOrderReader();
-//                reader.parsePdfToTxt(inputFiles, "purchase_order.txt");
-//                reader.parseTxtToObjects("purchase_order.txt");
-//
-//                for (PurchaseOrder po : reader.getDaftarPesanan().getDaftarPO()) {
-//                    this.tablemodel.addRow(new Object[]{po.nomorPO, po.tanggalKirim, po.namaToko, new String(" ")});
-//                }
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
             boolean success = this.mainController.generateDaftarSuratJalan(inputFiles, tablemodel);
             if (success) {
                 JOptionPane.showMessageDialog(this, "Berhasil membuat Daftar Surat Jalan", "Sukses", JOptionPane.INFORMATION_MESSAGE);

@@ -6,12 +6,11 @@ package views;
 
 import Connection.SqlHandler;
 import controllers.MainController;
+import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import utils.POCException;
 
 /**
@@ -21,6 +20,8 @@ import utils.POCException;
 public class FindToko extends javax.swing.JFrame {
     private MainController mainController;
     private SqlHandler handler;
+    DefaultTableModel tablemodel;
+    JTable table;
     /**
      * Creates new form FindToko
      */
@@ -51,7 +52,28 @@ public class FindToko extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
-
+    
+    public void initTable() 
+    {
+        tablemodel = new DefaultTableModel();
+        this.table = new JTable(tablemodel) 
+        {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                if (column == 3) {
+                    return true;
+                }
+                return false;
+            }
+        };
+        tablemodel.addColumn("ID Toko");
+        tablemodel.addColumn("ID Departemen");
+        tablemodel.addColumn("Nama Toko");
+        tablemodel.addColumn("Alamat");
+        tablemodel.addColumn("Telepon");     
+        this.resultPanel.add(this.table);
+        this.resultPanel.setViewportView(this.table);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,7 +89,7 @@ public class FindToko extends javax.swing.JFrame {
         nilai = new javax.swing.JLabel();
         value = new javax.swing.JTextField();
         cari = new javax.swing.JButton();
-        resultPane = new javax.swing.JScrollPane();
+        resultPanel = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -102,7 +124,7 @@ public class FindToko extends javax.swing.JFrame {
                             .addComponent(field, 0, 406, Short.MAX_VALUE)
                             .addComponent(value)))
                     .addComponent(cari)
-                    .addComponent(resultPane))
+                    .addComponent(resultPanel))
                 .addContainerGap(45, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -119,7 +141,7 @@ public class FindToko extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cari)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(resultPane, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                .addComponent(resultPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -141,9 +163,12 @@ public class FindToko extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             handler.connectToDataBase();
-            handler.findSupplier(this.field.getSelectedItem().toString(), this.value.getText());
+            ResultSet result = handler.findProduk(this.field.getSelectedItem().toString(), this.value.getText());
+            while(result.next()){
+                this.tablemodel.addRow(new Object[]{result.getString(0), result.getString(1), result.getString(2), result.getString(3), result.getString(4)});
+            }
         } catch (Exception ex) {
-            Logger.getLogger(FindSupplier.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FindProductUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_cariActionPerformed
 
@@ -155,7 +180,7 @@ public class FindToko extends javax.swing.JFrame {
     private javax.swing.JComboBox field;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel nilai;
-    private javax.swing.JScrollPane resultPane;
+    private javax.swing.JScrollPane resultPanel;
     private javax.swing.JTextField value;
     // End of variables declaration//GEN-END:variables
 }

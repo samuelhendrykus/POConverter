@@ -57,7 +57,7 @@
                           </Group>
                       </Group>
                       <Component id="cari" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="resultPane" alignment="0" max="32767" attributes="0"/>
+                      <Component id="resultPanel" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="45" max="32767" attributes="0"/>
               </Group>
@@ -79,7 +79,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="cari" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="resultPane" pref="197" max="32767" attributes="0"/>
+                  <Component id="resultPanel" pref="197" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -119,7 +119,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cariActionPerformed"/>
           </Events>
         </Component>
-        <Container class="javax.swing.JScrollPane" name="resultPane">
+        <Container class="javax.swing.JScrollPane" name="resultPanel">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
         </Container>

@@ -8,13 +8,13 @@ import Connection.SqlHandler;
 import com.qt.datapicker.DatePicker;
 import controllers.MainController;
 import java.awt.Event;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Observable;
-import java.util.Observer;
+import java.sql.ResultSet;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.TableView;
 import utils.POCException;
 
 /**
@@ -22,37 +22,65 @@ import utils.POCException;
  * @author samuelhendrykus
  */
 public class Pesanan extends javax.swing.JFrame {
+
     private MainController mainController;
     private SqlHandler handler;
+    DefaultTableModel tablemodel;
+    JTable table;
+
     /**
      * Creates new form Pesanan
      */
     public Pesanan(MainController mainController, SqlHandler handler) {
-        try{
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             JOptionPane.showMessageDialog(this, "Failed to set Look and Feel", "GUI Exception", JOptionPane.WARNING_MESSAGE);
         }
-        
+
         initComponents();
-        
+
         mainController = mainController;
         this.handler = handler;
-        
-        try{
+
+        try {
             this.setIconImage(mainController.getIconImage());
-        }catch(POCException e){
+        } catch (POCException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), e.getTitle(), JOptionPane.WARNING_MESSAGE);
         }
         this.setTitle("Pesanan");
-        
+
         // launch the window  
-      
+
         pack();
         validate();
         setLocationRelativeTo(null);    // centering the window
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
+    }
+
+    public void initTable() {
+        tablemodel = new DefaultTableModel();
+        this.table = new JTable(tablemodel) {
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                if (column == 3) {
+                    return true;
+                }
+                return false;
+            }
+        };
+        tablemodel.addColumn("ID Pesanan");
+        tablemodel.addColumn("ID Toko");
+        tablemodel.addColumn("ID Departemen");
+        tablemodel.addColumn("ID Supplier");
+        tablemodel.addColumn("ID Produk");
+        tablemodel.addColumn("Tanggal Pesan");
+        tablemodel.addColumn("Tanggal Kirim");
+        tablemodel.addColumn("Banyak");
+        this.resultPanel.add(this.table);
+        this.resultPanel.setViewportView(this.table);
     }
 
     /**
@@ -79,8 +107,9 @@ public class Pesanan extends javax.swing.JFrame {
         tanggalKirimField = new ObservingTextField();
         datePicker1 = new javax.swing.JButton();
         datePicker2 = new javax.swing.JButton();
-        resultPane = new javax.swing.JScrollPane();
+        resultPanel = new javax.swing.JScrollPane();
         cari = new javax.swing.JButton();
+        savePdf = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -123,6 +152,13 @@ public class Pesanan extends javax.swing.JFrame {
             }
         });
 
+        savePdf.setText("Save to PDF");
+        savePdf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                savePdfActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -130,7 +166,7 @@ public class Pesanan extends javax.swing.JFrame {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(resultPane)
+                    .addComponent(resultPanel)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(idPesanan)
@@ -159,7 +195,9 @@ public class Pesanan extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addComponent(cari)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cari)
+                            .addComponent(savePdf))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -191,8 +229,10 @@ public class Pesanan extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cari)
                 .addGap(5, 5, 5)
-                .addComponent(resultPane, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addComponent(resultPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(savePdf)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -203,20 +243,28 @@ public class Pesanan extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void datePicker1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datePicker1ActionPerformed
+    private void savePdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePdfActionPerformed
         // TODO add your handling code here:
-        DatePicker picker = new com.qt.datapicker.DatePicker(null, new Date(System.currentTimeMillis()));
-        picker.setCloseOnSelect(true);
-        picker.register(this.tanggalPesanField);
-        picker.start(this.datePicker1);
-        
-    }//GEN-LAST:event_datePicker1ActionPerformed
+    }//GEN-LAST:event_savePdfActionPerformed
+
+    private void cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariActionPerformed
+        try {
+            // TODO add your handling code here:
+            handler.connectToDataBase();
+            ResultSet result = handler.findPesanan("IdPesanan", this.idPesananField.getText(), this.idTokoField.getText(), this.idDepartemenField.getText(), this.idSupplierField.getText(), this.tanggalPesanField.getText(), this.tanggalKirimField.getText());
+            while (result.next()) {
+                this.tablemodel.addRow(new Object[]{result.getString(0), result.getString(1), result.getString(2), result.getString(3), result.getString(4)});
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Pesanan.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_cariActionPerformed
 
     private void datePicker2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datePicker2ActionPerformed
         // TODO add your handling code here:
@@ -226,30 +274,87 @@ public class Pesanan extends javax.swing.JFrame {
         picker.start(this.datePicker2);
     }//GEN-LAST:event_datePicker2ActionPerformed
 
-    private void cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariActionPerformed
-        try {
-            // TODO add your handling code here:
-            handler.connectToDataBase();
-            
-        } catch (Exception ex) {
-            Logger.getLogger(Pesanan.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_cariActionPerformed
+    private void datePicker1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datePicker1ActionPerformed
+        // TODO add your handling code here:
+        DatePicker picker = new com.qt.datapicker.DatePicker(null, new Date(System.currentTimeMillis()));
+        picker.setCloseOnSelect(true);
+        picker.register(this.tanggalPesanField);
+        picker.start(this.datePicker1);
+    }//GEN-LAST:event_datePicker1ActionPerformed
 
     class ObservingTextField extends JTextField implements Observer {
-    private static final long serialVersionUID = -9121215994812342536L;
 
-    public void update(Observable o, Object arg) {
-        DatePicker dp = (DatePicker) o;
-        Calendar calendar = (Calendar) arg;
+        private static final long serialVersionUID = -9121215994812342536L;
+
+        public void update(Observable o, Object arg) {
+            DatePicker dp = (DatePicker) o;
+            Calendar calendar = (Calendar) arg;
 //        System.out.println("picked=" + dp.formatDate(calendar));
-        setText(dp.formatDate(calendar));
+            setText(dp.formatDate(calendar));
+        }
+
+        class RowPesanan {
+
+            String idPesanan;
+            String idToko;
+            String idDepartemen;
+            String idSupplier;
+            String idProduk;
+            String tanggalPesan;
+            String idKirim;
+            String idBanyak;
+
+            public RowPesanan(String idPesanan, String idToko, String idDepartemen, String idSupplier, String idProduk, String tanggalPesan, String idKirim, String idBanyak) {
+                this.idPesanan = idPesanan;
+                this.idToko = idToko;
+                this.idDepartemen = idDepartemen;
+                this.idSupplier = idSupplier;
+                this.idProduk = idProduk;
+                this.tanggalPesan = tanggalPesan;
+                this.idKirim = idKirim;
+                this.idBanyak = idBanyak;
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                if (obj == null) {
+                    return false;
+                }
+                if (getClass() != obj.getClass()) {
+                    return false;
+                }
+                final RowPesanan other = (RowPesanan) obj;
+                if (!Objects.equals(this.idPesanan, other.idPesanan)) {
+                    return false;
+                }
+                if (!Objects.equals(this.idToko, other.idToko)) {
+                    return false;
+                }
+                if (!Objects.equals(this.idDepartemen, other.idDepartemen)) {
+                    return false;
+                }
+                if (!Objects.equals(this.idSupplier, other.idSupplier)) {
+                    return false;
+                }
+                if (!Objects.equals(this.idProduk, other.idProduk)) {
+                    return false;
+                }
+                if (!Objects.equals(this.tanggalPesan, other.tanggalPesan)) {
+                    return false;
+                }
+                if (!Objects.equals(this.idKirim, other.idKirim)) {
+                    return false;
+                }
+                if (!Objects.equals(this.idBanyak, other.idBanyak)) {
+                    return false;
+                }
+                return true;
+            }
+        }
     }
-}
     /**
      * @param args the command line arguments
      */
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cari;
     private javax.swing.JButton datePicker1;
@@ -263,7 +368,8 @@ public class Pesanan extends javax.swing.JFrame {
     private javax.swing.JLabel idToko;
     private javax.swing.JTextField idTokoField;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JScrollPane resultPane;
+    private javax.swing.JScrollPane resultPanel;
+    private javax.swing.JButton savePdf;
     private javax.swing.JLabel tanggalKirim;
     private ObservingTextField tanggalKirimField;
     private ObservingTextField tanggalPesanField;
